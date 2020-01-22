@@ -13,8 +13,17 @@ function ExistsIdProject(req, res, next) {
   }
   return res.status(401).json({ error: 'Não foi possível continuar!' })
 }
+
+function ExistsProject(req, res, next) {
+  const index = projetos.findIndex(item => item.id === Number(req.body.id))
+  if (index === -1) {
+    return next()
+  }
+  return res.status(401).json({ error: 'Não foi possível continuar!' })
+}
+
 //Cadastra
-server.post('/projects', (req, res) => {
+server.post('/projects', ExistsProject, (req, res) => {
   projetos.push(req.body);
   return res.json(req.body);
 });
@@ -42,4 +51,4 @@ server.post('/projects/:id/tasks', ExistsIdProject, (req, res) => {
   return res.json(projetos)
 })
 
-server.listen(5001);
+server.listen(5003);
